@@ -2,6 +2,7 @@ package cp_a;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
@@ -23,8 +24,16 @@ public class WordCount {
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             
+            Scanner scn=new Scanner(value.toString());
+            while(scn.hasNext())
+            {
+                String Line=scn.nextLine();
+                int index1=value.find("\"id\"");
+                
+            }
+            
             HashSet<String> ID=new HashSet<String>();
-            int index1=value.find("\"id\"");
+            
             
             
         }
