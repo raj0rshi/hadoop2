@@ -6,7 +6,9 @@
 package cp_a;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -21,18 +23,25 @@ import org.json.simple.parser.JSONParser;
  */
 public class Test {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
 
-        File folder = new File("/home/rajorshi/Downloads/SmallDataset");
+        File folder = new File("/home/rajorshi/Downloads/For Merge");
         File[] listOfFiles = folder.listFiles();
         HashMap<Long, JSONObject> CommentsMap = new HashMap<Long, JSONObject>();
-        int commentcount=0;
+        int commentcount = 0;
 
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 //    System.out.println("File " + listOfFiles[i].getAbsolutePath());
 
-                Scanner scn = new Scanner(listOfFiles[i]);
+                File file = listOfFiles[i];
+                FileInputStream fis = new FileInputStream(file);
+                byte[] data = new byte[(int) file.length()];
+                fis.read(data);
+                fis.close();
+                String str = new String(data, "UTF-8");
+
+                Scanner scn = new Scanner(str);
                 if (scn.hasNext()) {
                     scn.nextLine();
                 }
@@ -75,18 +84,16 @@ public class Test {
             }
 
         }
-        
+
         //output
-        
-        File output=new File("output.txt");
-        PrintWriter pw=new PrintWriter(output);
-        for(JSONObject comment: CommentsMap.values())
-        {
+        File output = new File("output.txt");
+        PrintWriter pw = new PrintWriter(output);
+        for (JSONObject comment : CommentsMap.values()) {
             pw.println(comment.toJSONString());
         }
         pw.close();
-        System.out.println("comments:"+ commentcount);
-        System.out.println("unique comments:"+ CommentsMap.size());
+        System.out.println("comments:" + commentcount);
+        System.out.println("unique comments:" + CommentsMap.size());
 
     }
 
